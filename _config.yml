@@ -1,0 +1,42 @@
+# Site settings
+title: Proxy Codex
+email: perf@lagtency.com
+description: My Blog.
+url: "https://lagtency.com"
+baseurl: ""
+usernames:
+  discord: proxylat
+  github: proxylat
+permalink: pretty
+
+plugins:
+  - jekyll-sitemap
+
+# Build settings
+markdown: kramdown
+
+sass:
+  sass_dir: css
+  style: compressed
+
+exclude:
+  - vendor
+  - LICENSE
+  - scripts/
+  - package.json
+  - package-lock.json
+  - node_modules/
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+
+# Defaults
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      comments: false
+      mathjax: false
+      social: true

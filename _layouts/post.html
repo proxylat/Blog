@@ -1,0 +1,20 @@
+---
+layout: default
+---
+<article class="post post-page-layout" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
+    <p class="post-meta">
+      {{ page.date | date: "%-d %b %Y" }}
+      {% if page.tags and page.tags.size > 0 %}
+        -
+        {% for tag in page.tags %}
+          <span class="post-tag">[{{ tag }}]</span>
+        {% endfor %}
+      {% endif %}
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+</article>

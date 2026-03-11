@@ -1,0 +1,171 @@
+---
+---
+@charset "utf-8";
+
+@font-face {
+  font-family: CPMono_v07;
+  src: url("/font/CPMono_v07_Plain.woff2") format("woff2");
+  font-display: block;
+  font-optical-sizing: none;
+  size-adjust: 100%;
+  font-kerning: none!important;
+  font-stretch: 100%!important;
+  ascent-override: normal;
+  descent-override: normal;
+  line-gap-override: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+$base-font-family: CPMono_v07;
+$base-font-size: 16px;
+$small-font-size: $base-font-size * 0.875;
+$base-line-height: 1.5;
+$spacing-unit: 30px;
+$highlight-blue: #ADD8E6;
+$grey-color: #828282;
+
+$content-width: 800px;
+$on-palm: 800px;
+
+@mixin media-query($device) {
+  @media screen and (max-width: $device) {
+    @content;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+:root {
+  --bg: #161618;
+  --text: #ffffff;
+  --muted: #828282;
+  --border: #323235;
+  --link: #2a7ae2;
+  --link-visited: #1b57a4;
+  --code-bg: #1e1e1e;
+  --code-text: #f8f8f2;
+  --code-border: #444444;
+  --blockquote-border: #c3c3c3;
+}
+
+html[data-theme="light"] {
+  --bg: #ffffff;
+  --text: #0b0f14;
+  --muted: #57606a;
+  --border: #d0d7de;
+  --link: #0969da;
+  --link-visited: #8250df;
+  --code-bg: #f6f8fa;
+  --code-text: #0b0f14;
+  --code-border: #d0d7de;
+  --blockquote-border: #d0d7de;
+}
+
+body {
+  font-family: $base-font-family, Consolas, monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+ul, ol, dl, figure {
+  margin-bottom: 15px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+}
+
+ul, ol {
+  margin-left: 30px;
+}
+
+blockquote,
+p {
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+p:empty {
+  display: none;
+}
+
+blockquote {
+  color: var(--muted);
+  border-left: 4px solid var(--blockquote-border);
+  padding-left: 15px;
+  font-size: 18px;
+  font-style: italic;
+  display: block;
+}
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  display: inline;
+  line-height: inherit;
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+pre, code {
+  font-size: 15px;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border: 1px solid var(--code-border);
+}
+
+code {
+  padding: 1px 5px;
+}
+
+pre {
+  padding: 8px 12px;
+  overflow-x: auto;
+}
+
+pre > code {
+  border: none;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.wrapper {
+  max-width: calc(#{$content-width} - (#{$spacing-unit} * 2));
+  margin: 0 auto;
+  padding: 0 $spacing-unit;
+  }
+
+.icon img {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+@import "layout";

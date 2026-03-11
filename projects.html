@@ -1,0 +1,23 @@
+---
+layout: page
+title: Projects
+permalink: /projects/
+order: 1
+---
+<div class="projects-container">
+  <p>Working here...</p>
+  <ul class="project-list">
+    {% for project in site.data.projects %}
+      {% if project.title %}
+    <li>
+      <a href="{{ project.href }}" target="_blank" rel="noopener noreferrer">{{ project.title }}</a>
+      <span class="post-meta">
+        {{ project.status}}
+      </span>
+      <br>
+      {{ project.desc }}
+    </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
