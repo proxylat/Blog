@@ -1,85 +1,80 @@
-const fs = require("fs");
-const path = require("path");
-const { imageSize } = require("image-size");
-const { JSDOM } = require("jsdom");
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
+import path from 'path';
+import sharp from 'sharp';
 
-const DIST = path.resolve("./_site");
+const DIST = path.resolve('./_site');
 
-function walk(dir) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
+const getAttr = (tag, attr) => {
+  const m = tag.match(new RegExp(`\\b${attr}=["']([^"']*)["']`, 'i'));
+  return m ? m[1] : null;
+};
+const hasAttr = (tag, attr) => new RegExp(`\\b${attr}[=\\s>]`, 'i').test(tag);
+const addAttr = (tag, attrs) => tag.replace(/(\s*\/?)>$/, ` ${attrs}$1>`);
 
-  for (const entry of entries) {
-    const full = path.join(dir, entry.name);
+async function processFile(file) {
+  let html = readFileSync(file, 'utf8');
+  if (!html.includes('<img')) return;
 
-    if (entry.isDirectory()) {
-      walk(full);
-      continue;
-    }
-
-    if (!entry.name.endsWith(".html")) continue;
-
-    processFile(full);
-  }
-}
-
-function processFile(file) {
-  const html = fs.readFileSync(file, "utf8");
-  if (!html.includes("<img")) return;
-
-  const dom = new JSDOM(html);
-  const doc = dom.window.document;
-
+  const imgRegex = /<img[^>]*>/gi;
+  let imgIndex = 0;
+  let result = '';
+  let lastIndex = 0;
+  let match;
   let changed = false;
 
-  const article = doc.querySelector("article");
-  const imgs = article
-    ? article.querySelectorAll("img")
-    : doc.querySelectorAll("img");
-
-  let imgIndex = 0;
-
-  imgs.forEach(img => {
+  while ((match = imgRegex.exec(html)) !== null) {
     imgIndex++;
-
-    const needsSize =
-      !(img.hasAttribute("width") && img.hasAttribute("height"));
-
+    let t = match[0];
+    const src = getAttr(t, 'src') || '';
+    const isExternal = src.startsWith('http') || src.startsWith('//');
     const isAboveTheFold = imgIndex <= 2;
+    const isLogo = src.includes('logo.avif');
 
-    if (!img.hasAttribute("loading") && !isAboveTheFold) {
-      const src = img.getAttribute("src") || "";
-      const isLogo =
-        src.includes("logo.avif") || img.hasAttribute("fetchpriority");
-
-      if (!isLogo) {
-        img.setAttribute("loading", "lazy");
-        changed = true;
+    if (src.toLowerCase().includes('.gif') && !hasAttr(t, 'style')) {
+      t = addAttr(t, 'style="display:block;margin:0 auto;max-width:100%;height:auto"'); changed = true;
+    }
+    if (!hasAttr(t, 'loading') && !isAboveTheFold && !isLogo) {
+      t = addAttr(t, 'loading="lazy"'); changed = true;
+    }
+    if (!hasAttr(t, 'decoding') && isExternal && !src.toLowerCase().includes('.gif')) {
+      t = addAttr(t, 'decoding="async"'); changed = true;
+    }
+    if (!(hasAttr(t, 'width') && hasAttr(t, 'height')) && src && !isExternal && !src.startsWith('data:')) {
+      const imgPath = path.join(DIST, src.replace(/^\/+/, ''));
+      if (existsSync(imgPath)) {
+        try {
+          const { width, height } = await sharp(imgPath).metadata();
+          if (width && height) {
+            t = addAttr(t, `width="${width}" height="${height}"`); changed = true;
+          }
+        } catch (_) {}
       }
     }
 
-    if (!needsSize) return;
+    result += html.slice(lastIndex, match.index) + t;
+    lastIndex = match.index + match[0].length;
+  }
 
-    const src = img.getAttribute("src");
-    if (!src || src.startsWith("http") || src.startsWith("data:")) return;
-
-    const imgPath = path.join(DIST, src);
-    if (!fs.existsSync(imgPath)) return;
-
-    const buffer = fs.readFileSync(imgPath);
-    const { width, height } = imageSize(buffer);
-
-    img.setAttribute("width", width);
-    img.setAttribute("height", height);
-
+  result += html.slice(lastIndex);
+  if (result.includes('<video')) {
+    result = result.replace(/<video\b([^>]*)>/gi, (_, attrs) => {
+      if (/\bstyle=(["'])([^"']*)\1/.test(attrs)) {
+        return `<video ${attrs.replace(/\bstyle=(["'])/, 'style=$1display:block;margin:1rem auto;')}>`;
+      }
+      return `<video style="display:block;margin:1rem auto;max-width:100%;height:auto" ${attrs}>`;
+    });
     changed = true;
-  });
+  }
 
-  if (changed) {
-    fs.writeFileSync(file, dom.serialize());
+  if (changed) writeFileSync(file, result);
+}
+
+async function walk(dir) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) { await walk(full); continue; }
+    if (entry.name.endsWith('.html')) await processFile(full);
   }
 }
 
-walk(DIST);
-
-console.log("Done");
-
+walk(DIST).then(() => console.log('Done')).catch(err => { console.error(err); process.exit(1); });

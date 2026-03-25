@@ -1,3 +1,18 @@
+@use "sass:math";
+@use "sass:color";
+
+$base-line-height: 1.5 !default;
+$spacing-unit: 30px !default;
+$highlight-blue: #ADD8E6 !default;
+$small-font-size: 14px !default;
+$on-palm: 800px !default;
+
+@mixin media-query($device) {
+  @media screen and (max-width: $device) {
+    @content;
+  }
+}
+
 .site-header {
   border-bottom: 1px solid var(--border);
   height: 131px;
@@ -39,8 +54,10 @@
       width: 100px;
       height: 100px;
       flex-shrink: 0;
-      }
+      background-color: #161618;
+      border-radius: 50%;
     }
+  }
 
   .site-tagline {
     position: absolute;
@@ -49,7 +66,7 @@
     font-size: 15px;
     font-weight: 400;
     color: var(--muted);
-    }
+  }
 
   .site-nav {
     padding-top: 5px;
@@ -63,9 +80,8 @@
       display: flex;
       align-items: center;
       gap: 0;
-      }
+    }
 
-    
     .page-link {
       display: inline-block;
       margin-right: 5px;
@@ -89,52 +105,64 @@
         transition: transform 0.3s;
         z-index: -1;
       }
+
       &:hover::before {
         transform: scaleX(1);
       }
-      
+
       &:hover {
         color: var(--text);
       }
-      
+
       text-decoration: none;
-      
+
       &:visited {
         color: var(--text);
       }
     }
-
-    .theme-toggle {
-      margin-left: 8px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      border-radius: 0;
-      width: 30px;
-      height: 30px;
-      padding: 0;
-      line-height: 1;
-      font-size: 18px;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    html[data-theme="dark"] & .theme-toggle::before { content: "☾"; transform: translateX(1px); }
-    html[data-theme="light"] & .theme-toggle::before { content: "☀"; }
-
-    .theme-toggle:hover {
-      background: var(--code-bg);
-    }
-
-    .theme-toggle:focus-visible {
-      outline: 2px solid $highlight-blue;
-      outline-offset: 2px;
-    }
   }
+}
+
+.theme-toggle {
+  margin-left: 8px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: 30px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-weight: 800;
+  border: 0;
+  left: 10px;
+}
+
+.theme-toggle::before {
+  content: "☀";
+  display: inline-block;
+  font-weight: 500;
+  transform: translateY(-8px);
+  transform-origin: center;
+}
+
+.dark-theme .theme-toggle::before {
+  content: "☾";
+  font-weight: 800;
+  transform: translateY(-8px) rotate(-50deg);
+}
+
+.social-media-list .icon img {
+  opacity: 0.95;
+  filter: invert(1) brightness(0.2);
+}
+
+.dark-theme .social-media-list .icon img {
+  filter: none;
+}
+
+.dark-theme .site-header .site-title .site-logo {
+  background-color: transparent;
+  border-radius: 0;
 }
 
 .site-footer {
@@ -156,8 +184,8 @@
 
 .footer-col {
   float: left;
-  padding-left: $spacing-unit / 2;
-  margin-bottom: $spacing-unit / 2;
+  padding-left: math.div($spacing-unit, 2);
+  margin-bottom: math.div($spacing-unit, 2);
 }
 
 .footer-col-2 {
@@ -198,20 +226,31 @@
 
 .social-media-list .email-link,
 .social-media-list .github-link {
-  color: darken($highlight-blue, 20%);
+  color: var(--link);
   text-decoration: none;
-  
+
+  &:visited {
+    color: #6b3fc7;
+    font-weight: 600;
+  }
+
   &:hover {
-    color: lighten($highlight-blue, 1%);
+    color: color.adjust($highlight-blue, $lightness: 1%);
   }
 }
 
-.social-media-list .icon img {
-  opacity: 0.95;
-}
+.dark-theme .social-media-list .email-link,
+.dark-theme .social-media-list .github-link {
+  color: color.adjust($highlight-blue, $lightness: -20%);
 
-html[data-theme="light"] .social-media-list .icon img {
-  filter: invert(1) brightness(0.2);
+  &:visited {
+    color: #2a7ae2;
+    font-weight: 600;
+  }
+
+  &:hover {
+    color: color.adjust($highlight-blue, $lightness: 1%);
+  }
 }
 
 .social-media-list .username {
@@ -233,16 +272,24 @@ html[data-theme="light"] .social-media-list .icon img {
 }
 
 .post-list > li {
-  margin-bottom: $spacing-unit / 2;
+  margin-bottom: math.div($spacing-unit, 2);
 }
 
 .post-content a {
-  color: darken($highlight-blue, 20%);
+  color: color.adjust($highlight-blue, $lightness: -20%);
   text-decoration: none;
   display: inline;
   line-height: inherit;
 }
-.post-content a:hover{color:lighten($highlight-blue,1%);text-decoration:none}
+
+.post-content a:hover {
+  color: color.adjust($highlight-blue, $lightness: 1%);
+  text-decoration: none;
+}
+
+.post-content a:visited {
+  color: #2a7ae2;
+}
 
 .post-meta {
   font-size: $small-font-size;
@@ -255,59 +302,49 @@ html[data-theme="light"] .social-media-list .icon img {
   display: none;
 }
 
-.post-list .post-link {
-  display: inline;
-  font-size: 17px;
-  color: #ADD8E6;
-}
-
-.post-list .post-link:visited {
-  color: #2a7ae2;
-  font-weight: 600;
-}
-
-.post-list .post-link:hover {
-  color: lighten(#ADD8E6, 10%);
-  text-decoration: none;
-}
-
+.post-list .post-link,
 .project-list a {
-  color: #ADD8E6;
+  display: inline;
+  color: var(--link);
   text-decoration: none;
 }
 
+.post-list .post-link:visited,
 .project-list a:visited {
-  color: #2a7ae2;
+  color: var(--link-visited);
   font-weight: 600;
+}
+
+.post-list .post-link:hover,
+.project-list a:hover {
+  text-decoration: none;
 }
 
 .post-header {
   font-size: inherit;
   margin-top: 0;
   margin-bottom: 15px;
-  }
-
+}
 
 .page-heading {
   font-size: 25px;
   margin-top: 0;
   margin-bottom: 20px;
   line-height: 1.2;
-  }
+}
 
 .home .page-heading {
   margin-top: 0;
 }
 
 .post-title {
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 800;
   letter-spacing: -1px;
   line-height: 1.2;
   margin-top: 0;
   margin-bottom: 0 !important;
-  }
-
+}
 
 .post-content {
   margin-top: 10px;
@@ -316,12 +353,12 @@ html[data-theme="light"] .social-media-list .icon img {
   h2 {
     font-size: 26px;
     line-height: 1.2;
-    }
+  }
 
   h3 {
     font-size: 20px;
     line-height: 1.2;
-    }
+  }
 
   h4 {
     font-size: 17px;
@@ -394,7 +431,7 @@ html[data-theme="light"] .social-media-list .icon img {
         font-size: 14px;
         padding: 4px 8px;
         margin-right: 3px;
-        
+
         &::before {
           top: 6px;
           bottom: 4px;
@@ -410,16 +447,16 @@ html[data-theme="light"] .social-media-list .icon img {
     align-items: center;
     gap: 15px;
   }
-  
+
   .footer-col-2 {
     width: 100%;
     padding: 0;
   }
-  
+
   .social-media-list li:not(.email-item) {
     margin: 0 10px;
   }
-  
+
   .footer-col {
     float: none;
     width: 100%;

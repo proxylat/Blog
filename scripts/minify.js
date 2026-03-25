@@ -1,6 +1,7 @@
-const fs = require('fs').promises;
-const path = require('path');
-const { minify } = require('@minify-html/node');
+import fs from 'fs/promises';
+import path from 'path';
+import pkg from '@minify-html/node';
+const { minify } = pkg;
 
 const buildDir = '_site';
 
@@ -23,14 +24,7 @@ async function findHtmlFiles(dir, files = []) {
   const options = {
     minify_js: true,
     minify_css: true,
-    do_not_minify_doctype: false,
-    keep_closing_tags: false,
-    keep_comments: false,
-    keep_html_and_head_opening_tags: false,
-    keep_spaces_between_attributes: false,
-    keep_quote_attr: false,
-    collapse_whitespaces: true,
-    conservative_collapse: false,
+    minify_doctype: true,
     remove_bangs: true,
     remove_processing_instructions: true
   };

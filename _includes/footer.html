@@ -3,26 +3,22 @@
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-2">
         <ul class="social-media-list">
-          {% assign lazy_loading = '' %}
-          {% if page.layout == 'post' %}
-            {% assign lazy_loading = 'loading="lazy" ' %}
-          {% endif %}
           <li class="email-item">
             <a href="mailto:{{ site.email }}" class="email-link">{{ site.email }}</a>
           </li>
           <li>
             <a href="https://github.com/{{ site.usernames.github }}" target="_blank" rel="noopener noreferrer" class="github-link">
               <span class="icon icon--github">
-                <img src="{{ '/imgs/icon-github.webp' | relative_url }}" width="24" height="24" alt="GitHub" {{ lazy_loading }}fetchpriority="low">
+                <img src="{{ '/imgs/icon-github.webp' | relative_url }}" width="24" height="24" alt="GitHub" loading="lazy">
               </span>
-              <span class="username">{{ site.usernames.github }}</span>
+              {{ site.usernames.github }}
             </a>
           </li>
           <li>
-              <span class="icon icon--discord">
-                <img src="{{ '/imgs/icon-discord.webp' | relative_url }}" width="24" height="24" alt="Discord" {{ lazy_loading }}fetchpriority="low">
-              </span>
-              <span class="username">{{ site.usernames.discord }}</span>
+            <span class="icon icon--discord">
+              <img src="{{ '/imgs/icon-discord.webp' | relative_url }}" width="24" height="24" alt="Discord" loading="lazy">
+            </span>
+            <span class="username">{{ site.usernames.discord }}</span>
           </li>
         </ul>
       </div>

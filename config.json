@@ -1,0 +1,7 @@
+{
+  "input": "./",
+  "outputDir": "./imgs/2026",
+  "deleteOriginal": false,
+  "recursive": false,
+  "webp": { "quality": 85, "effort": 4 }
+}

@@ -29,14 +29,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - config.json
 
-# Defaults
-defaults:
-  -
-    scope:
-      path: ""
-      type: "posts"
-    values:
-      comments: false
-      mathjax: false
-      social: true
+include:
+  - _headers

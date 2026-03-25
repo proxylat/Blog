@@ -1,4 +1,4 @@
 Gemfile.lock
 node_modules/
 _site/
-package-lock.json
+.jekyll-cache/

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   {% include head.html %}
-  <body {% if page.layout == 'post' %}class="is-post-layout"{% elsif page.layout == 'page' and page.title %}class="{{ page.title | downcase | replace: ' ', '-' }}"{% endif %}>
+  <body>
     {% include header.html %}
     <div class="page-content">
       <div class="wrapper">
@@ -9,21 +9,5 @@
       </div>
     </div>
     {% include footer.html %}
-    <script>
-      (() => {
-        const btn = document.querySelector("[data-theme-toggle]");
-        if (!btn) return;
-        const root = document.documentElement;
-        const set = (t) => {
-          root.dataset.theme = t;
-          root.style.colorScheme = t;
-          try { localStorage.setItem("theme", t); } catch {}
-          btn.setAttribute("aria-pressed", String(t === "dark"));
-          btn.title = t === "dark" ? "Switch to light theme" : "Switch to dark theme";
-        };
-        set(root.dataset.theme === "light" ? "light" : "dark");
-        btn.addEventListener("click", () => set(root.dataset.theme === "dark" ? "light" : "dark"), { passive: true });
-      })();
-    </script>
   </body>
 </html>

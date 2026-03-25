@@ -3,7 +3,7 @@
     <a class="site-title" href="{{ site.baseurl }}/">
       <img src="{{ site.baseurl }}/imgs/logo.avif" alt="{{ site.title }}" class="site-logo" fetchpriority="high" width="100" height="100">
       <span class="site-title-text">{{ site.title }}</span>
-      <span class="site-tagline">Do it faster.</span>
+      <span class="site-tagline">Make it faster.</span>
     </a>
     <nav class="site-nav">
       <div class="trigger">
@@ -13,7 +13,7 @@
             <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
           {% endif %}
         {% endfor %}
-        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false" data-theme-toggle></button>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false"></button>
       </div>
     </nav>
   </div>
