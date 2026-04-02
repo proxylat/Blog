@@ -1,35 +1,55 @@
-# Site settings
-title: Proxy Codex
-email: perf@lagtency.com
-description: My Blog.
-url: "https://lagtency.com"
-baseurl: ""
+# ── Identity ──────────────────────────────────────
+title:       Lagtency
+url:         "https://lagtency.com"
+baseurl:     ""
+author:      proxylat
+email:       perf@lagtency.com
+
 usernames:
+  github:  proxylat
   discord: proxylat
-  github: proxylat
+
+# ── Content ───────────────────────────────────────
 permalink: pretty
 
+defaults:
+  - scope:
+      path: ""
+    values:
+      image:
+        path:   /imgs/logo.avif
+        width:  100
+        height: 100
+
+# ── Plugins ───────────────────────────────────────
 plugins:
   - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-feed
 
-# Build settings
+feed:
+  path:         feed.xml
+  excerpt_only: true
+
+# ── Build ─────────────────────────────────────────
 markdown: kramdown
 
 sass:
-  sass_dir: css
-  style: compressed
+  sass_dir:  css
+  style:     compressed
+  sourcemap: never
 
 exclude:
-  - vendor
+  - vendor/
   - LICENSE
-  - scripts/
+  - README.md
+  - Gemfile
+  - Gemfile.lock
   - package.json
   - package-lock.json
   - node_modules/
-  - Gemfile
-  - Gemfile.lock
-  - README.md
-  - config.json
+  - scripts/
+  - subset_font.py
 
 include:
   - _headers

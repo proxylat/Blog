@@ -4,18 +4,18 @@
 @use "sass:meta";
 
 @font-face {
+  font-family: "CPMono_v07 Plain-fallback";
+  src: local("Consolas"), local("Courier New"), local("Monaco"), local("monospace");
+  ascent-override:   91.2%;
+  descent-override:  28.8%;
+  line-gap-override: 20.0%;
+  size-adjust: 118.22%;
+}
+
+@font-face {
   font-family: CPMono_v07;
   src: url("/font/CPMono_v07_Plain.woff2") format("woff2");
   font-display: block;
-  font-optical-sizing: none;
-  size-adjust: 100%;
-  font-kerning: none!important;
-  font-stretch: 100%!important;
-  ascent-override: normal;
-  descent-override: normal;
-  line-gap-override: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 $base-font-family: CPMono_v07;
@@ -28,12 +28,6 @@ $highlight-blue: #ADD8E6;
 $content-width: 800px;
 $on-palm: 800px;
 
-@mixin media-query($device) {
-  @media screen and (max-width: $device) {
-    @content;
-  }
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -42,6 +36,7 @@ $on-palm: 800px;
 html {
   overflow-x: hidden;
   line-height: 1.6;
+  scrollbar-gutter: stable;
 }
 
 :root {
@@ -55,6 +50,10 @@ html {
   --code-text: #0b0f14;
   --code-border: #d0d7de;
   --blockquote-border: #d0d7de;
+  --heading-tone: #4a4a43;
+  --meta-tone: #6a6b65;
+  --post-title-tone: #3f4039;
+  --content-strong-tone: #3f4039;
 }
 
 .dark-theme {
@@ -68,11 +67,17 @@ html {
   --code-text: #f8f8f2;
   --code-border: #444444;
   --blockquote-border: #c3c3c3;
+  --heading-tone: #d8cebf;
+  --meta-tone: #b8ae9f;
+  --post-title-tone: #f0e6d8;
+  --content-strong-tone: #d2c8ba;
 }
 
 body {
-  font-family: $base-font-family, Consolas, monospace;
+  font-family: $base-font-family, "CPMono_v07 Plain-fallback", Consolas, monospace;
   font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
   min-height: 100vh;
   color: var(--text);
@@ -126,7 +131,7 @@ a {
 }
 
 a:visited {
-  color: #2a7ae2;
+  color: var(--link-visited);
 }
 
 pre, code {
@@ -154,6 +159,14 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+  margin: 0 auto;
+}
+
+video {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem auto;
+  display: block
 }
 
 .wrapper {
@@ -166,7 +179,6 @@ img {
   display: inline-block;
   width: 20px;
   height: 20px;
-  vertical-align: middle;
 }
 
 @include meta.load-css("layout", $with: (
