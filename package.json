@@ -1,0 +1,28 @@
+{
+  "name": "lagtency",
+  "version": "1.0.0",
+  "description": "Optimized Jekyll website.",
+  "type": "module",
+  "scripts": {
+    "optimize:css": "node scripts/optimize-css.js",
+    "inline:css": "node scripts/inline-css.js",
+    "size:html": "node scripts/size.js",
+    "minify:html": "node scripts/minify.js",
+    "build": "npm run build:jekyll && npm run optimize:css && npm run inline:css && npm run size:html && npm run minify:html",
+    "build:jekyll": "bundle exec jekyll build --config _config.yml",
+    "dev": "npm run build && npx serve _site"
+  },
+  "keywords": [
+    "jekyll",
+    "optimization",
+    "performance"
+  ],
+  "author": "proxy",
+  "license": "ISC",
+  "devDependencies": {
+    "@minify-html/node": "^0.18.1",
+    "dropcss": "^1.0.16",
+    "lightningcss": "^1.30.1",
+    "sharp": "^0.34.5"
+  }
+}

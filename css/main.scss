@@ -1,0 +1,241 @@
+---
+---
+@charset "utf-8";
+@use "sass:meta";
+
+@font-face {
+  font-family: "CPMono_v07 Plain-fallback";
+  src: local("Consolas"), local("Courier New"), local("Monaco"), local("monospace");
+  ascent-override:   91.2%;
+  descent-override:  28.8%;
+  line-gap-override: 20.0%;
+  size-adjust: 118.22%;
+}
+
+@font-face {
+  font-family: CPMono_v07;
+  src: url("/font/CPMono_v07_Plain.woff2") format("woff2");
+  font-display: swap;
+}
+
+$base-font-family: CPMono_v07;
+$base-font-size: 16px;
+$small-font-size: $base-font-size * 0.875;
+$base-line-height: 1.5;
+$spacing-unit: 30px;
+$highlight-blue: #ADD8E6;
+
+$content-width: 800px;
+$on-palm: 700px; 
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-x: hidden;
+  line-height: 1.6;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  scrollbar-width: thin;
+}
+
+::selection {
+  background: #B8D9F0;
+}
+
+.dark-theme ::selection {
+  background: #264f78;
+}
+
+:root {
+  --bg: #f6f4ee;
+  --text: #0b0f14;
+  --muted: #57606a;
+  --border: #eae1d5;
+  --link: #0969da;
+  --link-visited: #6b3fc7;
+  --code-bg: #eae1d5;
+  --code-text: #0b0f14;
+  --code-border: #eae1d5;
+  --blockquote-border: #eae1d5;
+  --heading-tone: #242420;
+  --meta-tone: #6a6b65;
+  --content-strong-tone: #3f4039;
+  --scrollbar-thumb: #c1c1c1;
+  --accent: #4A90D9;
+}
+
+.dark-theme {
+  --bg: #161618;
+  --text: #ffffff;
+  --muted: #828282;
+  --border: #323235;
+  --link: #5bafc6;
+  --link-visited: #2a7ae2;
+  --code-bg: #1e1e1e;
+  --code-text: #f8f8f2;
+  --code-border: #1e1e1e;
+  --blockquote-border: #c3c3c3;
+  --heading-tone: #faf7f1;
+  --meta-tone: #b8ae9f;
+  --content-strong-tone: #d2c8ba;
+  --scrollbar-thumb: #555;
+  --accent: #ADD8E6;
+}
+
+body {
+  font-family: $base-font-family, "CPMono_v07 Plain-fallback", Consolas, monospace;
+  font-size: clamp(16px, 0.95rem + 0.3vw, 17px);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.25s, color 0.25s;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+ul, ol, dl, figure {
+  margin-bottom: 15px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+
+  &::before {
+    content: '';
+    display: table;
+    margin-bottom: -0.35em;
+  }
+
+  &::after {
+    content: '';
+    display: table;
+    margin-top: -0.35em;
+  }
+}
+
+ul, ol {
+  margin-left: 30px;
+}
+
+blockquote,
+p {
+  line-height: 1.6;
+  font-size: clamp(16px, 0.95rem + 0.3vw, 17px);
+}
+
+p:empty {
+  display: none;
+}
+
+blockquote {
+  color: var(--muted);
+  border-left: 4px solid var(--blockquote-border);
+  padding-left: 15px;
+  font-size: clamp(15px, 0.85rem + 0.3vw, 16px);
+  font-style: italic;
+  display: block;
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  display: inline;
+  line-height: inherit;
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+pre, code {
+  font-size: clamp(15px, 0.85rem + 0.3vw, 17px);
+  background: var(--code-bg);
+  color: var(--code-text);
+  border: 1px solid var(--code-border);
+}
+
+code {
+  padding: 1px 5px;
+}
+
+pre {
+  padding: 8px 12px;
+  overflow-x: auto;
+}
+
+pre > code {
+  border: none;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+video {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem auto;
+  display: block
+}
+
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+
+a:focus:not(:focus-visible), button:focus:not(:focus-visible), [tabindex]:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.wrapper {
+  max-width: calc(#{$content-width} - (#{$spacing-unit} * 2));
+  margin: 0 auto;
+  padding: 0 $spacing-unit;
+}
+
+.icon img {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+@include meta.load-css("layout", $with: (
+  "base-line-height": $base-line-height,
+  "spacing-unit": $spacing-unit,
+  "highlight-blue": $highlight-blue,
+  "small-font-size": $small-font-size,
+  "on-palm": $on-palm
+));
+
+.js-plotly-plot *,
+.js-plotly-plot *::before,
+.js-plotly-plot *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+.js-plotly-plot {
+  font-family: "Open Sans", verdana, arial, sans-serif, Consolas, monospace !important;
+}

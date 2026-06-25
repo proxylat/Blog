@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include head.html %}
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="progress-bar"></div>
+    {% include header.html %}
+    <div class="page-content" id="main-content">
+      <div class="wrapper">
+        {{ content }}
+      </div>
+    </div>
+    {% include footer.html %}
+    <script>
+      (function() {
+        var bar = document.getElementById('progress-bar');
+        if (!bar) return;
+        function update() {
+          var h = document.documentElement;
+          var total = Math.max(h.scrollHeight - h.clientHeight, 1);
+          var pct = (h.scrollTop || document.body.scrollTop) / total;
+          bar.style.setProperty('--progress', pct);
+          bar.style.transform = 'scaleX(' + pct + ')';
+        }
+        window.addEventListener('scroll', update);
+        update();
+      })();
+    </script>
+    <script>
+      (function() {
+        function loadVideo(video) {
+          if (video.dataset.lazyLoaded) return;
+          video.dataset.lazyLoaded = '1';
+          video.querySelectorAll('source[data-src]').forEach(function(source) {
+            source.src = source.dataset.src;
+            source.removeAttribute('data-src');
+          });
+          video.load();
+        }
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (!entry.isIntersecting) return;
+            loadVideo(entry.target);
+            observer.unobserve(entry.target);
+          });
+        }, { rootMargin: '200px' });
+        function observeVideos() {
+          document.querySelectorAll('video[data-lazy-video]').forEach(function(video) {
+            observer.observe(video);
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', observeVideos);
+        } else {
+          observeVideos();
+        }
+      })();
+    </script>
+  </body>
+</html>

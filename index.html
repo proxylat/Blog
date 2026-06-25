@@ -1,0 +1,19 @@
+---
+layout: default
+---
+<div class="home">
+  <p class="home-bio">Performance enthusiast focused on low-latency systems, web performance and optimization.</p>
+
+  <h2 class="page-heading">Articles</h2>
+  <ul class="post-list">
+    {% for post in site.posts %}
+    <li>
+      <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <br>
+      <span class="post-meta">
+        {{ post.date | date: "%b %-d, %Y" }}
+      </span>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

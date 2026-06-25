@@ -1,0 +1,56 @@
+# ── Identity ──────────────────────────────────────
+title:       Lagtency
+url:         "https://lagtency.com"
+baseurl:     ""
+author:      proxylat
+email:       perf@lagtency.com
+timezone:    Etc/UTC 
+
+usernames:
+  github:  proxylat
+  discord: proxylat
+
+# ── Content ───────────────────────────────────────
+permalink: pretty
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image:
+        path:   /imgs_vids/logo.avif
+        width:  100
+        height: 100
+
+# ── Plugins ───────────────────────────────────────
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-feed
+
+feed:
+  path:         feed.xml
+  excerpt_only: true
+
+# ── Build ─────────────────────────────────────────
+markdown: kramdown
+
+sass:
+  sass_dir:  css
+  style:     compressed
+  sourcemap: never
+
+exclude:
+  - vendor/
+  - LICENSE
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - node_modules/
+  - scripts/
+  - subset_font.py
+
+include:
+  - _headers

@@ -1,0 +1,40 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161618" media="(prefers-color-scheme: dark)">
+  {% seo %}
+  {% feed_meta %}
+  <link rel="preload" href="{{ '/font/CPMono_v07_Plain.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin="anonymous" fetchpriority="high">
+  <link rel="preload" href="/imgs_vids/logo.avif" as="image" type="image/avif" fetchpriority="high">
+  <link rel="stylesheet" href="{{ "/css/main.css" | relative_url }}">
+  <script>
+    !function () {
+      const d = document,
+            r = d.documentElement,
+            k = 'theme',
+            s = t => {
+              r.classList.toggle('dark-theme', t === 'dark');
+              r.style.colorScheme = t;
+              try { localStorage.setItem(k, t) } catch (_) {}
+            };
+
+      let t = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+      try { t = localStorage.getItem(k) || t } catch (_) {}
+      s(t);
+
+      d.addEventListener('DOMContentLoaded', () => {
+        const b = d.getElementById('themeToggle');
+        if (!b) return;
+        b.setAttribute('aria-pressed', r.classList.contains('dark-theme'));
+        b.onclick = () => {
+          t = r.classList.contains('dark-theme') ? 'light' : 'dark';
+          s(t);
+          b.setAttribute('aria-pressed', t === 'dark');
+        };
+      });
+    }();
+  </script>
+  <link rel="icon" href="{{ '/imgs_vids/favicon.ico' | relative_url }}">
+</head>
